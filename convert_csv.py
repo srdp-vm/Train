@@ -10,8 +10,12 @@ if __name__ == '__main__':
     annotation_dir = os.path.normpath(os.path.join(cwd, annotation_dir))
     print(images_dir)
     print(annotation_dir)
+
+    class_dict = {0 : "NF"}
     shape = (416, 416)
-    annotation_file = open("annotation.txt", "w")
+
+    #生成声明文件
+    annotation_file = open("annotation.csv", "w", newline="")
     anno_csv = csv.writer(annotation_file)
     for filename in os.listdir(images_dir):
         name, ext = os.path.splitext(filename)
@@ -30,8 +34,14 @@ if __name__ == '__main__':
                     y_min = round(center_y - h / 2)
                     y_max = round(center_y + h / 2)
                     # result += " " + ",".join(str(i) for i in [x_min, y_min, x_max, y_max, cid])
-                    result = [img_file, x_min, y_min, x_max, y_max]
-                    print(result)
+                    result = [img_file, x_min, y_min, x_max, y_max, class_dict[cid]]
+                    anno_csv.writerow(result)
         except IOError:
             print(anno_file + "文件不存在")
     annotation_file.close()
+
+    #生成classes.csv映射文件
+    with open("classes.csv", "w", newline="") as cls:
+        cls_csv = csv.writer(cls)
+        for k, v in class_dict.items():
+            cls_csv.writerow([v, k])
