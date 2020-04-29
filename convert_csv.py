@@ -33,7 +33,6 @@ if __name__ == '__main__':
                     x_max = round(center_x + w / 2)
                     y_min = round(center_y - h / 2)
                     y_max = round(center_y + h / 2)
-                    # result += " " + ",".join(str(i) for i in [x_min, y_min, x_max, y_max, cid])
                     result = [img_file, x_min, y_min, x_max, y_max, class_dict[cid]]
                     anno_csv.writerow(result)
         except IOError:
